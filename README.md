@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# React testing Library Notes
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Types of test
 
-## Available Scripts
+1. **Unit Test**: son test que prueban un componente de forma aislada. Eje: si tenemos un componente que recibe props, si le pasamos 5 esperariamos que retorne un 5.
+2. **Integration Integration**: son pruebas que prueban la interaccion entre componentes y si lo hacen de la forma apropiada. Eje: si escribo en el input y presiono en el boton la tarea se debe agregar en componete de lista de tareas.
+3. **End to End Test (E2E)**: son pruebas que simulan lo que los usuarios van hacer(todo el proceso de la aplicacion)
 
-In the project directory, you can run:
+### Test Block
 
-### `yarn start`
+* Usar it o test es equivalente, y el 1er parametro que reciben es la descripcion del test a realizar
+* Partes de un test block:
+    1. Render a component taht we are going to test
+    2. Find elements we want to interact with
+    3. Interact with those elements
+    4. Assertthat the results are as expected
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```javascript
+it('renders react link', () => {
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    // Render a component taht we are going to test
+    render(<App/> );
 
-### `yarn test`
+    // Find elements we want to interact with
+    const linkElement = screen.getByText(/learn react/i);
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    //Interact with those elements
 
-### `yarn build`
+    //Assertthat the results are as expected
+    expect(linkElement). toBeInTheDocument()
+});  
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Query Methods
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+|              |                  getBy                   |                                   findBy | queryBy                                  |                getAllBy                 |                               findAllBy |                              queryAllBy |
+| ------------ | :--------------------------------------: | ---------------------------------------: | ---------------------------------------- | :-------------------------------------: | --------------------------------------: | --------------------------------------: |
+| **No Match** |  <span style="color: red">error</span>   |    <span style="color: red">error</span> | null                                     |  <span style="color: red">error</span>  |   <span style="color: red">error</span> | <span style="color: green">array</span> |
+| **1 Match**  | <span style="color: green">return</span> | <span style="color: green">return</span> | <span style="color: green">return</span> | <span style="color: green">array</span> | <span style="color: green">array</span> | <span style="color: green">array</span> |
+| **1+ Match** |  <span style="color: red">error</span>   |    <span style="color: red">error</span> | <span style="color: red">error</span>    | <span style="color: green">array</span> | <span style="color: green">array</span> | <span style="color: green">array</span> |
+| **Await**    |                    no                    |                                      yes | no                                       |                   no                    |                                     yes |                                      no |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**NOTA**: el mas comun que se usa es el metodo getBy
 
-### `yarn eject`
+### Priority of methods to use in tests
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Este orden de prioridad esta basado en funciones que emulan o que mas se parecen a las acciones que puede tomar un usuario.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Accesible by Everyone**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+   * getByRole
+   * getByLabelText
+   * getByPlaceholderText
+   * getByText
+  
+2. **Semantic Queries**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   * getByAltText
+   * getByTitle
+  
+3. **Test ID**
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+   * getByTextId
