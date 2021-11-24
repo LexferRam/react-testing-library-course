@@ -61,3 +61,8 @@ Este orden de prioridad esta basado en funciones que emulan o que mas se parecen
 3. **Test ID**
 
    * getByTextId
+
+
+### FIRE events
+
+* fireEvent.[evento] es la fn que usamos para ejecutar un evento, viene de la libreria '@testing-library/react'
