@@ -4,13 +4,14 @@ import Header from '../Header';
 describe("Header", () => {
     it('should render same text passed into title prop', () => {
         render(
-            <Header 
-              title="todo"
+            <Header
+                title="todo"
             />
         );
         const h1Element = screen.getByText(/todo/i);
         expect(h1Element).toBeInTheDocument();
     });
+
 })
 
 // it('should render same text passed into title prop', () => {
@@ -29,10 +30,13 @@ describe("Header", () => {
 //           title="todo"
 //         />
 //     );
+//     //busca por el rol y por el texto usando 'name'
 //     const h1Element = screen.getByRole("heading", { name: /todo/i });
 //     expect(h1Element).toBeInTheDocument();
 // });
 
+//********<h3 title="Header" className="header">Cats</h3> *******************/
+//****busca por el atributo del tag llamado title ***************************/
 // it('should render same text passed into title prop', () => {
 //     render(
 //         <Header 
@@ -43,6 +47,9 @@ describe("Header", () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
+
+//********<h3 data-testid="header-2" className="header">Cats</h3> *******************/
+//*******busca por el atributo del tag llamado data-testid *********************/
 // it('should render same text passed into title prop', () => {
 //     render(
 //         <Header 
@@ -53,7 +60,7 @@ describe("Header", () => {
 //     expect(h2Element).toBeInTheDocument();
 // });
 
-// // WITH FINDBY
+// // FINDBY : es usado para cuando necesecitamos que la busqueda sea asincrona
 
 // it('should render same text passed into title prop', async () => {
 //     render(
@@ -65,7 +72,8 @@ describe("Header", () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
-// // WITH QUERYBY
+// // WITH QUERYBY: lo usamos cuando queremos probar un busqueda que sabemos que 
+//  no encontrara y no queremos que falle ya que retornara null
 
 // it('should render same text passed into title prop', () => {
 //     render(
@@ -77,7 +85,7 @@ describe("Header", () => {
 //     expect(h1Element).not.toBeInTheDocument
 // });
 
-// // WITH GETALLBY
+// // WITH GETALLBY: retorna un array si consigue mas de un elemento segun el query usado
 
 // it('should render same text passed into title prop', () => {
 //     render(

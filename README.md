@@ -9,7 +9,7 @@
 ### Test Block
 
 * Usar it o test es equivalente, y el 1er parametro que reciben es la descripcion del test a realizar
-* Partes de un test block:
+* Partes de un test block(como estructurarlo):
     1. Render a component taht we are going to test
     2. Find elements we want to interact with
     3. Interact with those elements
