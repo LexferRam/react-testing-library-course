@@ -12,10 +12,10 @@ const MockFollowersList = () => {
 
 describe("FollowersList", () => {
 
-    beforeEach(() => {
-        // console.log("RUNS BEFORE EACH TEST")
-        jest.mock("../../../__mocks__/axios")
-    })
+    // beforeEach(() => {
+    //     // console.log("RUNS BEFORE EACH TEST")
+    //     jest.mock("../../../__mocks__/axios")
+    // })
 
     // beforeAll(() => {
     //     console.log("RUNS ONCE BEFORE ALL TESTS")
@@ -33,16 +33,28 @@ describe("FollowersList", () => {
         render(
             <MockFollowersList />
         );
-        const followerDivElement = await screen.findByTestId(`follower-item-0`)
+        const followerDivElement = await screen.findByTestId("follower-item-0")
         expect(followerDivElement).toBeInTheDocument();
     });
-    
+
     it('should fetch and render input element', async () => {
         render(
             <MockFollowersList />
         );
-    
+
         const followerDivElement = await screen.findByTestId(`follower-item-0`)
         expect(followerDivElement).toBeInTheDocument();
     });
+
+    it('should render multiple follwer items', async () => {
+        render(
+            <MockFollowersList />
+        );
+
+        const followerDivElements = await screen.findAllByTestId(/follower-item/i)
+        // screen.debug()
+        expect(followerDivElements.length).toBe(2);
+    })
+
+
 })

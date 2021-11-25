@@ -12,6 +12,18 @@ const mockResponse = {
                 login: {
                     username: "ThePhonyGOAT"
                 }
+            },
+            {
+                name: {
+                    first: "Lexfer",
+                    last: "Ramirez"
+                },
+                picture: {
+                    large: "https://randomuser.me/api/portraits/men/58.jpg"
+                },
+                login: {
+                    username: "LexferRam"
+                }
             }
         ]
     }

@@ -65,4 +65,29 @@ Este orden de prioridad esta basado en funciones que emulan o que mas se parecen
 
 ### FIRE events
 
-* fireEvent.[evento] es la fn que usamos para ejecutar un evento, viene de la libreria '@testing-library/react'
+* fireEvent.[evento(element, target)] es la fn que usamos para ejecutar un evento, viene de la libreria '@testing-library/react'
+
+
+**NOTA**: ir al node_modules y modificar la carpeta "react-script">"scripts">"utils">"createJestConfig.js" y en la linea 69 en la propiedad resetMocks: true ==> pasarlo a false
+
+
+### Hooks de testing
+
+    // beforeEach(() => {
+    //     // console.log("RUNS BEFORE EACH TEST")
+    //     jest.mock("../../../__mocks__/axios")
+    // })
+
+    // beforeAll(() => {
+    //     console.log("RUNS ONCE BEFORE ALL TESTS")
+    // })
+
+    // afterEach(() => {
+    //     console.log("RUNS AFTER EACH TEST")
+    // })
+
+    // afterAll(() => {
+    //     console.log("RUNS ONCE AFTER ALL TESTS")
+    // })
+
+**NOTA**: si se usan dentro de un describe() los hooks solo seran aplicados a los bloques de test dentro de este
