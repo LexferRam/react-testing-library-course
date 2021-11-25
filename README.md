@@ -68,7 +68,7 @@ Este orden de prioridad esta basado en funciones que emulan o que mas se parecen
 * fireEvent.[evento(element, target)] es la fn que usamos para ejecutar un evento, viene de la libreria '@testing-library/react'
 
 
-**NOTA**: ir al node_modules y modificar la carpeta "react-script">"scripts">"utils">"createJestConfig.js" y en la linea 69 en la propiedad resetMocks: true ==> pasarlo a false
+**NOTA**:Para que mock request se tome de la carpeta __mocks__>axios(de lo contrario tratara de hacer la peticion con el axios normal) ir al node_modules y modificar la carpeta "react-script">"scripts">"utils">"createJestConfig.js" y en la linea 69 en la propiedad resetMocks: true ==> pasarlo a false
 
 
 ### Hooks de testing
