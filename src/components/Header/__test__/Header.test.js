@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Header from '../Header';
 
 describe("Header", () => {
@@ -24,16 +24,19 @@ describe("Header", () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
-// it('should render same text passed into title prop', () => {
-//     render(
-//         <Header 
-//           title="todo"
-//         />
-//     );
-//     //busca por el rol y por el texto usando 'name'
-//     const h1Element = screen.getByRole("heading", { name: /todo/i });
-//     expect(h1Element).toBeInTheDocument();
-// });
+it('should render same text passed into title prop', () => {
+    render(
+        <Header 
+          title="todo"
+        />
+    );
+    //busca por el rol y por el texto usando 'name'
+    const h1Element = screen.getByRole("heading", { name: /todo/i });
+    fireEvent.click(h1Element)
+    // expect(h1Element).toBeInTheDocument();
+    const alertMsg = screen.getByText(/Hello alert!/i);
+    expect(alertMsg).toBeInTheDocument();
+});
 
 //********<h3 title="Header" className="header">Cats</h3> *******************/
 //****busca por el atributo del tag llamado title ***************************/
@@ -96,3 +99,5 @@ describe("Header", () => {
 //     const h1Elements = screen.getAllByText(/todo/i);
 //     expect(h1Elements.length).toBe(1);
 // });
+
+

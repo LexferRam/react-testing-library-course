@@ -1,5 +1,12 @@
 # React testing Library Notes
 
+### Advantages of using testing
+
+* Catch bugs
+* Increases confidence in aplication
+* Speeds up QA time
+* Can serve as documentations
+
 ### Types of test
 
 1. **Unit Test**: son test que prueban un componente de forma aislada. Eje: si tenemos un componente que recibe props, si le pasamos 5 esperariamos que retorne un 5.
@@ -91,3 +98,19 @@ Este orden de prioridad esta basado en funciones que emulan o que mas se parecen
     // })
 
 **NOTA**: si se usan dentro de un describe() los hooks solo seran aplicados a los bloques de test dentro de este
+
+
+### Prorioty of using Methods
+
+* **Accessible by Everyone**
+- getByRole
+- getByLabelText
+- getByPlaceholderText
+- getByText
+
+* **Semantic queries**
+- getByAllText
+- getByTitle
+
+* **Test ID**
+- getByTestId
