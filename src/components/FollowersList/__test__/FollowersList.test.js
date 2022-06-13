@@ -47,9 +47,7 @@ describe("FollowersList", () => {
     });
 
     it('should render multiple follwer items', async () => {
-        render(
-            <MockFollowersList />
-        );
+        render(<MockFollowersList />);
 
         const followerDivElements = await screen.findAllByTestId(/follower-item/i)
         // screen.debug()

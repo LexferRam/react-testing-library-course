@@ -63,7 +63,7 @@ it('should render same text passed into title prop', () => {
 //     expect(h2Element).toBeInTheDocument();
 // });
 
-// // FINDBY : es usado para cuando necesecitamos que la busqueda sea asincrona
+// // FINDBY : es usado para cuando necesecitamos que la busqueda sea asincrona (debemos usar async-await)
 
 // it('should render same text passed into title prop', async () => {
 //     render(
