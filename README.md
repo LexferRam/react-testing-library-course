@@ -148,3 +148,30 @@ test('should fetch users', () => {
   return Users.all().then(data => expect(data).toEqual(users));
 });
 ```
+
+## Debugging Tests in Visual Studio Code
+
+* seleccionar la opcion de "debugg"
+* Colocar el punto de pararda 
+* Ejecutar el debbug seleccionando el icono de play 
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug CRA Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
+      "args": ["test", "--runInBand", "--no-cache", "--watchAll=false"],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": { "CI": "true" },
+      "disableOptimisticBPs": true
+    }
+  ]
+}
+```

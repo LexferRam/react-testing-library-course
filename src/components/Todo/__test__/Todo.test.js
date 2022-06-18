@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, getByDisplayValue } from '@testing-library/react';
 import Todo from "../Todo"
 import { BrowserRouter } from "react-router-dom"
 
@@ -29,6 +29,19 @@ const addTask = (tasks) => {
 //     const divElement = screen.getByText(/Go Grocery Shopping/i)
 //     expect(divElement).toBeInTheDocument()
 // })
+
+it("",() => {
+    render(<MockTodo/>)
+
+    const inputElement = screen.getByPlaceholderText(/Add todo.../i);
+    const buttonElement = screen.getByRole('button',{name:/Add/i})
+
+    fireEvent.change(inputElement, {target: {value:"Test de lexfer"}});
+    fireEvent.click(buttonElement)
+
+    const divElement = screen.getElementByText(/test de lexfer/i)
+    expect(divElement).toBeInTheDocument()
+})
 
 it('should be able to type into input', () => {
     render(
@@ -75,3 +88,4 @@ it('task should have complete class when clicked', () => {
     fireEvent.click(divElement)
     expect(divElement).toHaveClass("todo-item-active")
 });
+
