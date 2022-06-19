@@ -1,4 +1,4 @@
-# React testing Library Notes
+# ReactJS Testing Library
 
 ### Advantages of using testing
 
@@ -14,14 +14,6 @@
 3. **End to End Test (E2E)**: son pruebas que simulan lo que los usuarios van hacer(todo el proceso de la aplicacion)
 
 ### Test Block
-
-* Usar it o test es equivalente, y el 1er parametro que reciben es la descripcion del test a realizar
-* Partes de un test block(como estructurarlo):
-    1. Render a component taht we are going to test
-    2. Find elements we want to interact with
-    3. Interact with those elements
-    4. Assertthat the results are as expected
-
 ```javascript
   it('renders react link', () => {
 
@@ -69,35 +61,9 @@ Este orden de prioridad esta basado en funciones que emulan o que mas se parecen
 
    * getByTextId
 
-
 ### FIRE events
 
 * fireEvent.[evento(element, target)] es la fn que usamos para ejecutar un evento, viene de la libreria '@testing-library/react'
-
-
-**NOTA**:Para que mock request se tome de la carpeta __mocks__>axios(de lo contrario tratara de hacer la peticion con el axios normal) ir al node_modules y modificar la carpeta "react-script">"scripts">"utils">"createJestConfig.js" y en la linea 69 en la propiedad resetMocks: true ==> pasarlo a false
-
-
-### Hooks de testing
-
-    // beforeEach(() => {
-    //     // console.log("RUNS BEFORE EACH TEST")
-    //     jest.mock("../../../__mocks__/axios")
-    // })
-
-    // beforeAll(() => {
-    //     console.log("RUNS ONCE BEFORE ALL TESTS")
-    // })
-
-    // afterEach(() => {
-    //     console.log("RUNS AFTER EACH TEST")
-    // })
-
-    // afterAll(() => {
-    //     console.log("RUNS ONCE AFTER ALL TESTS")
-    // })
-
-**NOTA**: si se usan dentro de un describe() los hooks solo seran aplicados a los bloques de test dentro de este
 
 ### Configuracion en package.json de jest
 
@@ -112,56 +78,22 @@ resetMocks: false ==> para que no resetee los mocks
   }
 ```
 
-### Mocks Axios request
+## Testing initial rendering
+**NOTA**: usar ==>  screen.debug() cuanod queremos ver el codigo del html en cualquier punto del test 
 
-```js
-import axios from 'axios';
-import Users from './users';
+**Prueba de renderizado de un elemento**
+```javascript
+    it('should render input element', () => {
+        render(
+            <AddInput
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        expect(inputElement).toBeInTheDocument();
+    });
 
-jest.mock('axios');
-
-test('should fetch users', () => {
-  const users = [{name: 'Bob'}];
-  const resp = {data: users};
-  axios.get.mockResolvedValue(resp);
-
-  // or you could use the following depending on your use case:
-  // axios.get.mockImplementation(() => Promise.resolve(resp))
-
-  return Users.all().then(data => expect(data).toEqual(users));
-});
-```
-
-## Debugging Tests in Visual Studio Code
-
-* seleccionar la opcion de "debugg"
-* Colocar el punto de pararda 
-* Ejecutar el debbug seleccionando el icono de play 
-
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug CRA Tests",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
-      "args": ["test", "--runInBand", "--no-cache", "--watchAll=false"],
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "env": { "CI": "true" },
-      "disableOptimisticBPs": true
-    }
-  ]
-}
-```
-
-### Test render inicial
-
-```js
     it('Renders correctly initial document', () => {
 
         //querySelectorAll returns all the html inputs elements
@@ -175,6 +107,162 @@ test('should fetch users', () => {
         expect(label).not.toBeInTheDocument();
 
      })
+```
+
+**Prueba de onchange en un input**
+```javascript
+    const mockedSetTodo = jest.fn();
+
+    it('should be able to type into input', () => {
+        render(
+            <AddInput
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        // fireEvent.click(inputElement)
+        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } })
+        expect(inputElement.value).toBe("Go Grocery Shopping");
+    });
+    ////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
+
+    const MockTodo = () => {
+        return (
+            <BrowserRouter>
+                <Todo />
+            </BrowserRouter>
+        )
+    }
+
+    const addTask = (tasks) => {
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        const buttonElement = screen.getByRole("button", { name: /Add/i });
+        tasks.forEach((task) => {
+            fireEvent.change(inputElement, { target: { value: task } });
+            fireEvent.click(buttonElement);
+        })
+    }
+
+    it('should be able to type into input', () => {
+        render(
+            <MockTodo />
+        );
+        addTask(["Go Grocery Shopping"])
+        const divElement = screen.getByText(/Go Grocery Shopping/i);
+        expect(divElement).toBeInTheDocument()
+    });
+
+    //PRUEBA QUE REDERICE VARIOS ELEMENTOS
+    it('should render multiple items', () => {
+        render(
+            <MockTodo />
+        );
+        addTask(["Go Grocery Shopping", "Go Grocery Shopping", "Go Grocery Shopping"])
+        const divElements = screen.queryAllByText(/Go Grocery Shopping/i);
+        expect(divElements.length).toBe(3)
+    });
+```
+
+**Prueba limpiar campo cuando se da click al btn Add**
+```javascript
+    const mockedSetTodo = jest.fn();
+
+    it('should have empty input when add button is cliked', () => {
+        render(
+            <AddInput
+                todos={[]}
+                setTodos={mockedSetTodo}
+            />
+        );
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } });
+        const buttonElement = screen.getByRole("button", { name: /Add/i });
+        fireEvent.click(buttonElement)
+        expect(inputElement.value).toBe("")
+    });
+```
+
+**Prueba pasando props a un componente y probando que lo renderice**
+```javascript
+    it('should render same text passed into title prop', () => {
+        render(
+            <Header
+                title="todo"
+            />
+        );
+        const h1Element = screen.getByText(/todo/i);
+        expect(h1Element).toBeInTheDocument();
+    });
+```
+
+**Prueba de buqueda asincrona**
+```javascript
+    // // FINDBY : es usado para cuando necesecitamos que la busqueda sea asincrona (debemos usar async-await)
+    it('should render same text passed into title prop', async () => {
+        render(
+            <Header 
+            title="todo"
+            />
+        );
+        const h1Element = await screen.findByText(/todo/i);
+        expect(h1Element).toBeInTheDocument();
+    });
+```
+
+**Uso de queryBy (retorna null si no consigue)**
+```javascript
+    // QUERYBY: lo usamos cuando queremos probar un busqueda que sabemos que 
+    //  no encontrara y no queremos que falle ya que retornara null
+    it('should render same text passed into title prop', () => {
+        render(
+            <Header 
+            title="todo"
+            />
+        );
+        const h1Element = screen.queryByText(/dogs/i);
+        expect(h1Element).not.toBeInTheDocument
+    });
+```
+
+**Uso de getAllBy (retorna un array con las coincidencias)**
+```javascript
+// GETALLBY: retorna un array si consigue mas de un elemento segun el query usado
+it('should render same text passed into title prop', () => {
+    render(
+        <Header 
+          title="todo"
+        />
+    );
+    const h1Elements = screen.getAllByText(/todo/i);
+    expect(h1Elements.length).toBe(1);
+});
+```
+
+**Prueba que un elemento tenga una clase especifica**
+```javascript
+it('task should not have complete class when initally rendered', () => {
+    render(
+        <MockTodo />
+    );
+    addTask(["Go Grocery Shopping"])
+    const divElement = screen.getByText(/Go Grocery Shopping/i);
+    expect(divElement).not.toHaveClass("todo-item-active")
+});
+```
+
+**Prueba de que un elemento tiene un a clase especifica desplues de ser clicqueado**
+```javascript
+    it('task should have complete class when clicked', () => {
+        render(
+            <MockTodo />
+        );
+        addTask(["Go Grocery Shopping"])
+        const divElement = screen.getByText(/Go Grocery Shopping/i);
+        fireEvent.click(divElement)
+        expect(divElement).toHaveClass("todo-item-active")
+    });
 ```
 
 ### Test login form
@@ -243,3 +331,13 @@ test('should fetch users', () => {
 
   })
 ```
+
+
+**Otros metodos**
+
+* expect(pElement).toBeTruthy()
+* expect(pElement).toBeVisible()
+* expect(pElement).toContainHTML('p');//verifica si tiene una etiqueta <p></p>
+* expect(pElement).toHaveTextContent("1 task left")
+* expect(pElement).not.toBeFalsy();
+* expect(pElement.textContent).toBe("1 task left");

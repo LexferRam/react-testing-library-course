@@ -30,19 +30,6 @@ const addTask = (tasks) => {
 //     expect(divElement).toBeInTheDocument()
 // })
 
-it("",() => {
-    render(<MockTodo/>)
-
-    const inputElement = screen.getByPlaceholderText(/Add todo.../i);
-    const buttonElement = screen.getByRole('button',{name:/Add/i})
-
-    fireEvent.change(inputElement, {target: {value:"Test de lexfer"}});
-    fireEvent.click(buttonElement)
-
-    const divElement = screen.getElementByText(/test de lexfer/i)
-    expect(divElement).toBeInTheDocument()
-})
-
 it('should be able to type into input', () => {
     render(
         <MockTodo />

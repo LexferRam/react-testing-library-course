@@ -63,8 +63,7 @@ it('should render same text passed into title prop', () => {
 //     expect(h2Element).toBeInTheDocument();
 // });
 
-// // FINDBY : es usado para cuando necesecitamos que la busqueda sea asincrona (debemos usar async-await)
-
+// // // FINDBY : es usado para cuando necesecitamos que la busqueda sea asincrona (debemos usar async-await)
 // it('should render same text passed into title prop', async () => {
 //     render(
 //         <Header 
@@ -75,29 +74,27 @@ it('should render same text passed into title prop', () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
-// // WITH QUERYBY: lo usamos cuando queremos probar un busqueda que sabemos que 
+// QUERYBY: lo usamos cuando queremos probar un busqueda que sabemos que 
 //  no encontrara y no queremos que falle ya que retornara null
+it('should render same text passed into title prop', () => {
+    render(
+        <Header 
+          title="todo"
+        />
+    );
+    const h1Element = screen.queryByText(/dogs/i);
+    expect(h1Element).not.toBeInTheDocument
+});
 
-// it('should render same text passed into title prop', () => {
-//     render(
-//         <Header 
-//           title="todo"
-//         />
-//     );
-//     const h1Element = screen.queryByText(/dogs/i);
-//     expect(h1Element).not.toBeInTheDocument
-// });
-
-// // WITH GETALLBY: retorna un array si consigue mas de un elemento segun el query usado
-
-// it('should render same text passed into title prop', () => {
-//     render(
-//         <Header 
-//           title="todo"
-//         />
-//     );
-//     const h1Elements = screen.getAllByText(/todo/i);
-//     expect(h1Elements.length).toBe(1);
-// });
+// GETALLBY: retorna un array si consigue mas de un elemento segun el query usado
+it('should render same text passed into title prop', () => {
+    render(
+        <Header 
+          title="todo"
+        />
+    );
+    const h1Elements = screen.getAllByText(/todo/i);
+    expect(h1Elements.length).toBe(1);
+});
 
 
