@@ -243,3 +243,72 @@ test('should fetch users', () => {
 
   })
 ```
+---
+---
+
+## Mock Server (Mock Server Worker)
+ 
+```javascript
+import React from "react"
+import { render, screen } from "@testing-library/react"
+import { rest } from "msw"
+import { setupServer } from "msw/node"
+
+import { MainPage } from "../components/main-page"
+
+const fakeQuotes = [
+  { quote: "Gah, stupid sexy Flanders!" },
+  { quote: "Eat my shorts" },
+  { quote: "Shut up, brain. I got friends now. I don't need you anymore" },
+]
+
+const server = setupServer(
+  rest.get("/quotes", (req, res, ctx) => {
+    return res(ctx.json(fakeQuotes))
+  })
+)
+```
+
+En seguida, agrego lo siguiente para hacer que el server se levante antes de correr las pruebas y se cierre ya que finalicen:
+
+```js
+// Enable API mocking before tests.
+beforeAll(() => server.listen())
+
+// Disable API mocking after the tests are done.
+afterAll(() => server.close())
+```
+
+Ahora modifico mi prueba existente sobre el contenido de las citas:
+
+```js
+  it("must contain quote value", async () => {
+    const [firstQuote, secondQuote, thirdQuote] = await screen.findAllByRole(
+      "listitem"
+    )
+
+    const [fakeOne, fakeTwo, fakeThird] = fakeQuotes
+    expect(firstQuote.textContent).toBe(fakeOne.quote)
+    expect(secondQuote.textContent).toBe(fakeTwo.quote)
+    expect(thirdQuote.textContent).toBe(fakeThird.quote)
+  })
+```
+
+
+## Test Driven Development o Desarrollo dirigido por pruebas
+
+<image src="./src/assets/images/tdd-flow.svg" width="400px" height="400px" />
+
+Test Driven Development is a technique for developing software that consists of short cycle, in which you first write an automated test that fails, then do the minimum necessary to make it pass, and finally do a refactor.
+
+Cycle <span style="color:red">Red</span>, <span style="color:green">Green</span>, <span style="color:blue">Refactor</span>
+The Red, Green, Refactor cycle is the essence of TDD and consists of:
+
+<span style="color:red">RED</span>: Start by creating an automated test that fails out of the box. Typically, a failed test is colored red in test runners.
+
+<span style="color:green">GREEN</span>: Do the minimum necessary for the test to pass. Usually, a test that passes has a green color in a test runner.
+
+<span style="color:blue">REFACTOR</span>: Apply refactor techniques and good practices in the code created so far. SOLID principles or others, for example.
+
+**NOTA**:
+¡los tests deben ser considerados como parte del desarrollo de la funcionalidad!
