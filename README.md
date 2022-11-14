@@ -312,3 +312,23 @@ The Red, Green, Refactor cycle is the essence of TDD and consists of:
 
 **NOTA**:
 ¡los tests deben ser considerados como parte del desarrollo de la funcionalidad!
+
+Mock data fetch
+```javascript
+it("Should show a list of users from the API", async () => {
+
+    global.fetch = jest.fn(() =>
+        Promise.resolve({
+            json: () => Promise.resolve(data),
+        }),
+    ) as jest.Mock;
+    
+    render(<Users users={data}/>);
+    // screen.debug()
+
+    for(let user of data){
+      expect(await screen.findByText(user.name)).toBeInTheDocument()
+    }
+
+  })
+```
