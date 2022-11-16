@@ -332,3 +332,11 @@ it("Should show a list of users from the API", async () => {
 
   })
 ```
+### Appearance and Disappearance (assertion)
+<https://testing-library.com/docs/guide-disappearance/>
+
+### CheatSheet (query methods)
+<https://testing-library.com/docs/react-testing-library/cheatsheet/#async>
+
+### Events
+<https://testing-library.com/docs/dom-testing-library/api-events>
